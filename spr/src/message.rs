@@ -130,16 +130,19 @@ pub fn build_message(
     for section in sections {
         let value = section_texts.get(section);
         if let Some(text) = value {
-            if !result.is_empty() {
-                result.push('\n');
-            }
-
             if section != &MessageSection::Title
                 && section != &MessageSection::Summary
             {
                 // Once we encounter a section that's neither Title nor Summary,
                 // we start displaying the labels.
                 display_label = true;
+            }
+
+            if text.is_empty() {
+                continue;
+            }
+            if !result.is_empty() {
+                result.push('\n');
             }
 
             if display_label {
@@ -191,8 +194,8 @@ pub fn build_github_body_for_merging(
         &[
             MessageSection::Summary,
             MessageSection::TestPlan,
-            MessageSection::Reviewers,
-            MessageSection::ReviewedBy,
+            //MessageSection::Reviewers,
+            //MessageSection::ReviewedBy,
             MessageSection::PullRequest,
         ],
     )
