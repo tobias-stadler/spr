@@ -146,7 +146,7 @@ pub async fn land(
     // Okay, we are confident now that the PR can be merged and the result of
     // that merge would be a master commit with the same tree as if we
     // cherry-picked the commit onto master.
-    let mut pr_head_oid = pull_request.head_oid;
+    let pr_head_oid = pull_request.head_oid;
 
     if !base_is_master {
         // The base of the Pull Request on GitHub is not set to master. This
@@ -199,33 +199,11 @@ pub async fn land(
             // this whole operation further above. But in order not to show them
             // as part of this Pull Request after landing, we have to make clear
             // those are changes in master, not in this Pull Request.
-            // Here comes the additional merge-in-master commit on the Pull
-            // Request branch that achieves that!
-
-            pr_head_oid = git.create_derived_commit(
-                pr_head_oid,
-                &format!(
-                    "[𝘀𝗽𝗿] landed version\n\nCreated using spr {}",
-                    env!("CARGO_PKG_VERSION"),
-                ),
-                our_tree_oid,
-                &[pr_head_oid, current_master],
-            )?;
-
-            let mut cmd = tokio::process::Command::new("git");
-            cmd.arg("push")
-                .arg("--atomic")
-                .arg("--no-verify")
-                .arg("--")
-                .arg(&config.remote_name)
-                .arg(format!(
-                    "{}:{}",
-                    pr_head_oid,
-                    pull_request.head.on_github()
-                ));
-            run_command(&mut cmd)
-                .await
-                .reword("git push failed".to_string())?;
+            return Err(Error::new(formatdoc!(
+                        "Changes this PR is based on were landed since the pull \
+                        request was last updated. Please run `spr diff` to update the \
+                        pull request and then try `spr land` again!"
+                        )));
         }
 
         gh.update_pull_request(
