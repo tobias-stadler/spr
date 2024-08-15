@@ -449,7 +449,7 @@ async fn diff_impl(
         }
 
         let new_base_branch_commit = git.create_derived_commit(
-            local_commit.parent_oid,
+            local_commit.oid,
             &format!(
                 "[spr] {}\n\nCreated using spr {}\n\n[skip ci]",
                 if pull_request.is_some() {
