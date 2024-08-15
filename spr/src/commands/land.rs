@@ -97,6 +97,8 @@ pub async fn land(
     .reword("git fetch failed".to_string())?;
 
     let current_master = git.resolve_reference(config.master_ref.local())?;
+    let current_master_tree_oid =
+        git.get_tree_oid_for_commit(current_master)?;
     let base_is_master = pull_request.base.is_master_branch();
     let index = git.cherrypick(prepared_commit.oid, current_master)?;
 
@@ -118,6 +120,14 @@ pub async fn land(
     // This is the tree we are getting from cherrypicking the local commit
     // on the selected base (master or stacked-on Pull Request).
     let our_tree_oid = git.write_index(index)?;
+
+    if our_tree_oid == current_master_tree_oid {
+        return Err(Error::new(formatdoc!(
+            "This commit would be empty if applied on top of the '{master}' branch. \
+            Please amend changes to the commit or close the pull request.",
+            master = &config.master_ref.branch_name()
+        )));
+    }
 
     // Now let's predict what merging the PR into the master branch would
     // produce.
