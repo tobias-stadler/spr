@@ -1,0 +1,275 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Introduction - spr Documentation</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">spr Documentation</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/spacedentist/spr" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        <a href="https://github.com/spacedentist/spr/edit/master/docs/README.md" title="Suggest an edit" aria-label="Suggest an edit" rel="edit">
+                            <i id="git-edit-button" class="fa fa-edit"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <p><img src="./spr.svg" alt="spr" /></p>
+<h1 id="introduction"><a class="header" href="#introduction">Introduction</a></h1>
+<p>spr is a command line tool for using a stacked-diff workflow with GitHub.</p>
+<p>The idea behind spr is that your local branch management should not be dictated by your code-review tool. You should be able to send out code for review in individual commits, not branches. You make branches only when you want to, not because you <em>have</em> to for every code review.</p>
+<p>If you’ve used Phabricator and its command-line tool <code>arc</code>, you’ll find spr very familiar.</p>
+<p>To get started, see the <a href="./user/installation.html">installation instructions</a>, and the <a href="./user/setup.html">first-time setup</a>. (You’ll need to go through setup in each repo where you want to use spr.)</p>
+<h2 id="workflow-overview"><a class="header" href="#workflow-overview">Workflow overview</a></h2>
+<p>In spr’s workflow, you send out individual commits for review, not entire branches. This is the most basic version:</p>
+<ol>
+<li>
+<p>Make your change as a single commit, directly on your local <code>main</code><sup class="footnote-reference" id="fr-master-1"><a href="#footnote-master">1</a></sup> branch.</p>
+</li>
+<li>
+<p>Run <code>spr diff</code> to send out your commit for review on GitHub.</p>
+</li>
+<li>
+<p>If you need to make updates in response to feedback, amend your commit, and run <code>spr diff</code> again to send those updates to GitHub.</p>
+<p>Similarly, you can rebase onto newer upstream <code>main</code> and run <code>spr diff</code> to reflect any resulting changes to your commit.</p>
+</li>
+<li>
+<p>Once reviewers have approved, run <code>spr land</code>. This will put your commit on top of the latest <code>main</code> and push it upstream.</p>
+</li>
+</ol>
+<p>In practice, you’re likely to have more complex situations: multiple commits being reviewed, and possibly in-review commits that depend on others. You may need to make updates to any of these commits, or land them in any order.</p>
+<p>spr can handle all of that, without requiring any particular way of organizing your local repo. See the guides in the “How To” section for instructions on using spr in those situations:</p>
+<ul>
+<li><a href="./user/simple.html">Simple PRs</a>: no more than one review in flight on any branch.</li>
+<li><a href="./user/stack.html">Stacked PRs</a>: multiple reviews in flight at once on your local <code>main</code>.</li>
+</ul>
+<h2 id="rationale"><a class="header" href="#rationale">Rationale</a></h2>
+<p>The reason to use spr is that it allows you to use whatever local branching scheme you want, instead of being forced to create a branch for every review. In particular, you can commit everything directly on your local <code>main</code>. This greatly simplifies rebasing: rather than rebasing every review branch individually, you can simply rebase your local <code>main</code> onto upstream <code>main</code>.</p>
+<p>You can make branches locally if you want, and it’s not uncommon for spr users to do so. You could even make a branch for every review if you don’t want to use the stacked-PR workflow. It doesn’t matter to spr.</p>
+<p>One reasonable position is to make small changes directly on <code>main</code>, but make branches for larger, more complex changes. The branch keeps the work-in-progress isolated while you get it to a reviewable state, making lots of small commits that aren’t individually reviewable. Once the branch as a whole is reviewable, you can squash it down to a single commit, which you can send out for review (either from the branch or cherry-picked onto <code>main</code>).</p>
+<h3 id="why-review-commits"><a class="header" href="#why-review-commits">Why Review Commits?</a></h3>
+<p>The principle behind spr is <strong>one commit per logical change</strong>. Each commit should be able to stand on its own: it should have a coherent thesis and be a complete change in and of itself. It should have a clear summary, description, and test plan. It should leave the codebase in a consistent state: building and passing tests, etc.</p>
+<p>In addition, ideally, it shouldn’t be possible to further split a commit into multiple commits that each stand on their own. If you <em>can</em> split a commit that way, you should.</p>
+<p>What follows from those principles is the idea that <strong>commits, not branches, should be the unit of code review</strong>. The above description of a commit also describes the ideal code review: a single, well-described change that leaves the codebase in a consistent state, and that cannot be subdivided further.</p>
+<p>If the commit is the unit of code review, then, why should the code review tool require that you make branches? spr’s answer is: it shouldn’t.</p>
+<p>Following the one-commit-per-change principle maintains the invariant that checking out any commit on <code>main</code> gives you a codebase that has been reviewed <em>in that state</em>, and that builds and passes tests, etc. This makes it easy to revert changes, and to bisect.</p>
+<hr>
+<ol class="footnote-definition"><li id="footnote-master">
+<p>Git’s default branch name is <code>master</code>, but GitHub’s is now <code>main</code>, so we’ll use <code>main</code> throughout this documentation. <a href="#fr-master-1">↩</a></p>
+</li>
+</ol>
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+
+                            <a rel="next prefetch" href="user/installation.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+
+                    <a rel="next prefetch" href="user/installation.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="mermaid.min.js"></script>
+        <script src="mermaid-init.js"></script>
+
+
+
+    </div>
+    </body>
+</html>

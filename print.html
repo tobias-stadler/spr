@@ -1,0 +1,710 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>spr Documentation</title>
+        <meta name="robots" content="noindex">
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">spr Documentation</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/spacedentist/spr" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <p><img src="./spr.svg" alt="spr" /></p>
+<h1 id="introduction"><a class="header" href="#introduction">Introduction</a></h1>
+<p>spr is a command line tool for using a stacked-diff workflow with GitHub.</p>
+<p>The idea behind spr is that your local branch management should not be dictated by your code-review tool. You should be able to send out code for review in individual commits, not branches. You make branches only when you want to, not because you <em>have</em> to for every code review.</p>
+<p>If you’ve used Phabricator and its command-line tool <code>arc</code>, you’ll find spr very familiar.</p>
+<p>To get started, see the <a href="./user/installation.html">installation instructions</a>, and the <a href="./user/setup.html">first-time setup</a>. (You’ll need to go through setup in each repo where you want to use spr.)</p>
+<h2 id="workflow-overview"><a class="header" href="#workflow-overview">Workflow overview</a></h2>
+<p>In spr’s workflow, you send out individual commits for review, not entire branches. This is the most basic version:</p>
+<ol>
+<li>
+<p>Make your change as a single commit, directly on your local <code>main</code><sup class="footnote-reference" id="fr-master-1"><a href="#footnote-master">1</a></sup> branch.</p>
+</li>
+<li>
+<p>Run <code>spr diff</code> to send out your commit for review on GitHub.</p>
+</li>
+<li>
+<p>If you need to make updates in response to feedback, amend your commit, and run <code>spr diff</code> again to send those updates to GitHub.</p>
+<p>Similarly, you can rebase onto newer upstream <code>main</code> and run <code>spr diff</code> to reflect any resulting changes to your commit.</p>
+</li>
+<li>
+<p>Once reviewers have approved, run <code>spr land</code>. This will put your commit on top of the latest <code>main</code> and push it upstream.</p>
+</li>
+</ol>
+<p>In practice, you’re likely to have more complex situations: multiple commits being reviewed, and possibly in-review commits that depend on others. You may need to make updates to any of these commits, or land them in any order.</p>
+<p>spr can handle all of that, without requiring any particular way of organizing your local repo. See the guides in the “How To” section for instructions on using spr in those situations:</p>
+<ul>
+<li><a href="./user/simple.html">Simple PRs</a>: no more than one review in flight on any branch.</li>
+<li><a href="./user/stack.html">Stacked PRs</a>: multiple reviews in flight at once on your local <code>main</code>.</li>
+</ul>
+<h2 id="rationale"><a class="header" href="#rationale">Rationale</a></h2>
+<p>The reason to use spr is that it allows you to use whatever local branching scheme you want, instead of being forced to create a branch for every review. In particular, you can commit everything directly on your local <code>main</code>. This greatly simplifies rebasing: rather than rebasing every review branch individually, you can simply rebase your local <code>main</code> onto upstream <code>main</code>.</p>
+<p>You can make branches locally if you want, and it’s not uncommon for spr users to do so. You could even make a branch for every review if you don’t want to use the stacked-PR workflow. It doesn’t matter to spr.</p>
+<p>One reasonable position is to make small changes directly on <code>main</code>, but make branches for larger, more complex changes. The branch keeps the work-in-progress isolated while you get it to a reviewable state, making lots of small commits that aren’t individually reviewable. Once the branch as a whole is reviewable, you can squash it down to a single commit, which you can send out for review (either from the branch or cherry-picked onto <code>main</code>).</p>
+<h3 id="why-review-commits"><a class="header" href="#why-review-commits">Why Review Commits?</a></h3>
+<p>The principle behind spr is <strong>one commit per logical change</strong>. Each commit should be able to stand on its own: it should have a coherent thesis and be a complete change in and of itself. It should have a clear summary, description, and test plan. It should leave the codebase in a consistent state: building and passing tests, etc.</p>
+<p>In addition, ideally, it shouldn’t be possible to further split a commit into multiple commits that each stand on their own. If you <em>can</em> split a commit that way, you should.</p>
+<p>What follows from those principles is the idea that <strong>commits, not branches, should be the unit of code review</strong>. The above description of a commit also describes the ideal code review: a single, well-described change that leaves the codebase in a consistent state, and that cannot be subdivided further.</p>
+<p>If the commit is the unit of code review, then, why should the code review tool require that you make branches? spr’s answer is: it shouldn’t.</p>
+<p>Following the one-commit-per-change principle maintains the invariant that checking out any commit on <code>main</code> gives you a codebase that has been reviewed <em>in that state</em>, and that builds and passes tests, etc. This makes it easy to revert changes, and to bisect.</p>
+<hr>
+<ol class="footnote-definition"><li id="footnote-master">
+<p>Git’s default branch name is <code>master</code>, but GitHub’s is now <code>main</code>, so we’ll use <code>main</code> throughout this documentation. <a href="#fr-master-1">↩</a></p>
+</li>
+</ol><div style="break-before: page; page-break-before: always;"></div><h1 id="installation"><a class="header" href="#installation">Installation</a></h1>
+<h2 id="binary-installation"><a class="header" href="#binary-installation">Binary Installation</a></h2>
+<h3 id="using-homebrew"><a class="header" href="#using-homebrew">Using Homebrew</a></h3>
+<pre><code class="language-shell">brew install spr
+</code></pre>
+<h3 id="using-nix"><a class="header" href="#using-nix">Using Nix</a></h3>
+<p>spr is available in nixpkgs</p>
+<pre><code class="language-shell">nix run nixpkgs#spr
+</code></pre>
+<h3 id="using-cargo"><a class="header" href="#using-cargo">Using Cargo</a></h3>
+<p>If you have Cargo installed (the Rust build tool), you can install spr by running <code>cargo install spr</code>.</p>
+<h2 id="install-from-source"><a class="header" href="#install-from-source">Install from Source</a></h2>
+<p>spr is written in Rust. You need a Rust toolchain to build from source. See <a href="https://rustup.rs">rustup.rs</a> for information on how to install Rust if you have not got a Rust toolchain on your system already.</p>
+<p>With Rust all set up, clone this repository and run <code>cargo build --release</code>. The spr binary will be in the <code>target/release</code> directory.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="set-up-spr"><a class="header" href="#set-up-spr">Set up spr</a></h1>
+<p>In the repo you want to use spr in, run <code>spr init</code>; this will ask you several questions.</p>
+<p>You’ll need to authorise spr with your GitHub account. <code>spr init</code> will guide you through the process.</p>
+<p>The rest of the settings that <code>spr init</code> asks for have sensible defaults, so almost all users can simply accept the defaults. The most common situation where you would need to diverge from the defaults is if the remote representing GitHub is not called <code>origin</code>.</p>
+<p>See the <a href="user/../reference/configuration.html">Configuration</a> reference page for full details about the available settings.</p>
+<p>After initial setup, you can update your settings in several ways:</p>
+<ul>
+<li>
+<p>Simply rerun <code>spr init</code>. The defaults it suggests will be your existing settings, so you can easily change only what you need to.</p>
+</li>
+<li>
+<p>Use <code>git config --set</code> (<a href="https://git-scm.com/docs/git-config">docs here</a>).</p>
+</li>
+<li>
+<p>Edit the <code>[spr]</code> section of <code>.git/config</code> directly.</p>
+</li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="create-and-land-a-simple-pr"><a class="header" href="#create-and-land-a-simple-pr">Create and Land a Simple PR</a></h1>
+<p>This section details the process of putting a single commit up for review, and landing it (pushing it upstream). It assumes you don’t have multiple reviews in flight at the same time. That situation is covered in <a href="user/./stack.html">another guide</a>, but you should be familiar with this single-review workflow before reading that one.</p>
+<ol>
+<li>
+<p>Pull <code>main</code> from upstream, and check it out.</p>
+</li>
+<li>
+<p>Make your change, and run <code>git commit</code>. See <a href="user/./commit-message.html">this guide</a> for what to put in your commit message.</p>
+</li>
+<li>
+<p>Run <code>spr diff</code>. This will create a PR for your HEAD commit.</p>
+</li>
+<li>
+<p>Wait for reviewers to approve. If you need to make changes:</p>
+<ol>
+<li>
+<p>Make whatever changes you need in your working copy.</p>
+</li>
+<li>
+<p>Amend them into your HEAD commit with <code>git commit --amend</code>.</p>
+</li>
+<li>
+<p>Run <code>spr diff</code>. If you changed the commit message in the previous step, you will need to add the flag <code>--update-message</code>; see <a href="user/./commit-message.html">this guide</a> for more detail.</p>
+<p>This will update the PR with the new version of your HEAD commit. spr will prompt you for a short message that describes what you changed. You can also pass the update message on the command line using the <code>--message</code>/<code>-m</code> flag of <code>spr diff</code>.</p>
+</li>
+</ol>
+</li>
+<li>
+<p>Once your PR is approved, run <code>spr land</code> to push it upstream.</p>
+</li>
+</ol>
+<p>The above instructions have you committing directly to your local <code>main</code>. Doing so will keep things simpler when you have multiple reviews in flight. However, spr does not require that you commit directly to <code>main</code>. You can make branches if you prefer. <code>spr land</code> will always push your commit to upstream <code>main</code>, regardless of which local branch it was on. Note that <code>spr land</code> won’t delete your feature branch.</p>
+<h2 id="when-you-update"><a class="header" href="#when-you-update">When you update</a></h2>
+<p>When you run <code>spr diff</code> to update an existing PR, your update will be added to the PR as a new commit, so that reviewers can see exactly what changed. The new commit’s message will be what you entered in step 4.3 of the instructions above.</p>
+<p>The individual commits that you see in the PR are solely for the benefit of reviewers; they will not be reflected in the commit history when the PR is landed. The commit that eventually lands on upstream <code>main</code> will always be a single commit, whose message is the title and description from the PR.</p>
+<h2 id="updating-before-landing"><a class="header" href="#updating-before-landing">Updating before landing</a></h2>
+<p>If you amend your local commit before landing, you must run <code>spr diff</code> to update the PR before landing, or else <code>spr land</code> will fail.</p>
+<p>This is because <code>spr land</code> checks to make sure that the following two operations result in exactly the same tree:</p>
+<ul>
+<li>Merging the PR directly into upstream <code>main</code>.</li>
+<li>Cherry-picking your HEAD commit onto upstream <code>main</code>.</li>
+</ul>
+<p>This check prevents <code>spr land</code> from either landing or silently dropping unreviewed changes.</p>
+<h2 id="conflicts-on-landing"><a class="header" href="#conflicts-on-landing">Conflicts on landing</a></h2>
+<p><code>spr land</code> may fail with conflicts; for example, there may have been new changes pushed to upstream <code>main</code> since you last rebased, and those changes conflict with your PR. In this case:</p>
+<ol>
+<li>
+<p>Rebase your PR onto latest upstream <code>main</code>, resolving conflicts in the process.</p>
+</li>
+<li>
+<p>Run <code>spr diff</code> to update the PR.</p>
+</li>
+<li>
+<p>Run <code>spr land</code> again.</p>
+</li>
+</ol>
+<p>Note that even if your local commit (and your PR) is not based on the latest upstream <code>main</code>, landing will still succeed as long as there are no conflicts with the actual latest upstream <code>main</code>.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="stack-multiple-prs"><a class="header" href="#stack-multiple-prs">Stack Multiple PRs</a></h1>
+<p>The differences between spr’s commit-based workflow and GitHub’s default branch-based workflow are most apparent when you have multiple reviews in flight at the same time.</p>
+<p>This guide assumes you’re already familiar with the workflow for <a href="user/./simple.html">simple, non-stacked PRs</a>.</p>
+<p>You’ll use Git’s <a href="https://git-scm.com/docs/git-rebase#_interactive_mode">interactive rebase</a> quite often in managing stacked-PR situations. It’s a very powerful tool for reordering and combining commits in a series.</p>
+<p>This is the workflow for creating multiple PRs at the same time. This example only creates two, but the workflow works for arbitrarily deep stacks.</p>
+<ol>
+<li>
+<p>Make a change and commit it on <code>main</code>. We’ll call this commit A.</p>
+</li>
+<li>
+<p>Make another change and commit it on top of commit A. We’ll call this commit B.</p>
+</li>
+<li>
+<p>Run <code>spr diff --all</code>. This is equivalent to calling <code>spr diff</code> on each commit starting from <code>HEAD</code> and going to back to the first commit that is part of upstream <code>main</code>. Thus, it will create a PR for each of commits A and B.</p>
+</li>
+<li>
+<p>Suppose you need to update commit A in response to review feedback. You would:</p>
+<ol>
+<li>
+<p>Make the change and commit it on top of commit B, with a throwaway message.</p>
+</li>
+<li>
+<p>Run <code>git rebase --interactive</code>. This will bring up an editor that looks like this:</p>
+<pre><code>pick 0a0a0a Commit A
+pick 1b1b1b Commit B
+pick 2c2c2c throwaway
+</code></pre>
+<p>Modify it to look like this<sup class="footnote-reference" id="fr-rebase-cmds-1"><a href="#footnote-rebase-cmds">1</a></sup>:</p>
+<pre><code>pick 0a0a0a Commit A
+fixup 2c2c2c throwaway
+exec spr diff
+pick 1b1b1b Commit B
+</code></pre>
+<p>This will (1) amend your latest commit into commit A, discarding the throwaway message and using commit A’s message for the combined result; (2) run <code>spr diff</code> on the combined result; and (3) put commit B on top of the combined result.</p>
+</li>
+</ol>
+</li>
+<li>
+<p>You must land commit A before commit B. (See <a href="user/stack.html#cherry-picking">the next section</a> for what to do if you want to be able to land B first.) To land commit A, you would:</p>
+<ol>
+<li>
+<p>Run <code>git rebase --interactive</code>. The editor will start with this:</p>
+<pre><code>pick 3a3a3a Commit A
+pick 4b4b4b Commit B
+</code></pre>
+<p>Modify it to look like this:</p>
+<pre><code>pick 3a3a3a Commit A
+exec spr land
+pick 4b4b4b Commit B
+</code></pre>
+</li>
+</ol>
+</li>
+<li>
+<p>Now you’re left with just commit B on top of upstream <code>main</code>, and you can use the non-stacked workflow to update and land it.</p>
+</li>
+</ol>
+<p>There are a few possible variations to note:</p>
+<ul>
+<li>
+<p>Instead of a single run of <code>spr diff --all</code> at the beginning, you could run plain <code>spr diff</code> right after making each commit.</p>
+</li>
+<li>
+<p>Instead of step 4, you could use interactive rebase to swap the order of commits A and B (as long as B doesn’t depend on A), and then simply use the non-stacked workflow to amend A and update the PR.</p>
+</li>
+<li>
+<p>In step 4.2, if you want to update the commit message of commit A, you could instead do the following interactive rebase:</p>
+<pre><code>pick 0a0a0a Commit A
+squash 2c2c2c throwaway
+exec spr diff --update-message
+pick 1b1b1b Commit B
+</code></pre>
+<p>The <code>squash</code> command will open an editor, where you can edit the message of the combined commit. The <code>--update-message</code> flag on the next line is important; see <a href="user/./commit-message.html">this guide</a> for more detail.</p>
+</li>
+</ul>
+<h2 id="cherry-picking"><a class="header" href="#cherry-picking">Cherry-picking</a></h2>
+<p>In the above example, you would not be able to land commit B before landing commit A, even if they were totally independent of each other.</p>
+<p>First, some behind-the-scenes explanation. When you create the PR for commit B, <code>spr diff</code> will create a PR whose base branch is not <code>main</code>, but rather a synthetic branch that contains the difference between <code>main</code> and B’s parent. This is so that the PR for B only shows the changes in B itself, rather than the entire difference between <code>main</code> and B.</p>
+<p>When you run <code>spr land</code>, it checks that each of these two operations would produce <em>exactly the same tree</em>:</p>
+<ul>
+<li>Merging the PR directly into upstream <code>main</code>.</li>
+<li>Cherry-picking the local commit onto upstream <code>main</code>.</li>
+</ul>
+<p>If those operations wouldn’t result in the same tree, <code>spr land</code> fails. This is to prevent you from landing a commit whose contents aren’t the same as what reviewers have seen.</p>
+<p>In the above example, then, the PR for commit B has a synthetic base branch that contains the changes in commit A. Thus, if you tried to land B before A, <code>spr land</code>’s “merge PR vs. cherry-pick” check would fail.</p>
+<p>If you want to be able to land commit B before A, do this:</p>
+<ol>
+<li>
+<p>Make commit A on top of <code>main</code> as before, and run <code>spr diff</code>.</p>
+</li>
+<li>
+<p>Make commit B on top of A as before, and run <code>spr diff --cherry-pick</code>. The flag causes <code>spr diff</code> to create the PR as if B were cherry-picked onto upstream <code>main</code>, rather than creating the synthetic base branch. (This step will fail if B does not cherry-pick cleanly onto upstream <code>main</code>, which would imply that A and B are not truly independent.)</p>
+</li>
+<li>
+<p>Once B is ready to land, you can do one of two things:</p>
+<ul>
+<li>
+<p>Run <code>spr land --cherry-pick</code>. (By default, <code>spr land</code> refuses to land a commit whose parent is not on upstream <code>main</code>; the flag makes it skip that check.)</p>
+</li>
+<li>
+<p>Do an interactive rebase that puts B directly on top of upstream <code>main</code>, then runs <code>spr land</code>, then puts A on top of B.</p>
+</li>
+</ul>
+</li>
+</ol>
+<h2 id="rebasing-the-whole-stack"><a class="header" href="#rebasing-the-whole-stack">Rebasing the whole stack</a></h2>
+<p>One of the major advantages of committing everything to local <code>main</code> is that rebasing your work onto new upstream <code>main</code> commits is much simpler than if you had a branch for every in-flight review. The difference is especially pronounced if some of your reviews depend on others, which would entail dependent feature branches in a branch-based workflow.</p>
+<p>Rebasing all your in-flight reviews and updating their PRs is as simple as:</p>
+<ol>
+<li>
+<p>Run <code>git pull --rebase</code> on <code>main</code>, resolving conflicts along the way as needed.</p>
+</li>
+<li>
+<p>Run <code>spr diff --all</code>.</p>
+</li>
+</ol>
+<hr>
+<ol class="footnote-definition"><li id="footnote-rebase-cmds">
+<p>You can shorten <code>exec</code> to <code>x</code>, <code>fixup</code> to <code>f</code>, and <code>squash</code> to <code>s</code>; they are spelled out here for clarity. <a href="#fr-rebase-cmds-1">↩</a></p>
+</li>
+</ol><div style="break-before: page; page-break-before: always;"></div><h1 id="format-and-update-commit-messages"><a class="header" href="#format-and-update-commit-messages">Format and Update Commit Messages</a></h1>
+<p>You should format your commit messages like this:</p>
+<pre><code>One-line title
+
+Then a description, which may be multiple lines long.
+This describes the change you are making with this commit.
+
+Test Plan: how to test the change in this commit.
+
+The test plan can also be several lines long.
+
+Reviewers: github-username-a, github-username-b
+</code></pre>
+<p>The first line will be the title of the PR created by <code>spr diff</code>, and the rest of the lines except for the <code>Reviewers</code> line will be the PR description (i.e. the content of the first comment). The GitHub users named on the <code>Reviewers</code> line will be added to the PR as reviewers.</p>
+<p>The <code>Test Plan</code> section is required to be present by default; <code>spr diff</code> will fail with an error if it isn’t.
+You can disable this in the <a href="user/../reference/configuration.html">configuration</a>.</p>
+<h2 id="updating-the-commit-message"><a class="header" href="#updating-the-commit-message">Updating the commit message</a></h2>
+<p>When you create a PR with <code>spr diff</code>, <strong>the PR becomes the source of truth</strong> for the title and description. When you land a commit with <code>spr land</code>, its commit message will be amended to match the PR’s title and description, regardless of what is in your local repo.</p>
+<p>If you want to update the title or description, there are two ways to do so:</p>
+<ul>
+<li>
+<p>Modify the PR through GitHub’s UI.</p>
+</li>
+<li>
+<p>Amend the commit message locally, then run <code>spr diff --update-message</code>. <em>Note that this does not update reviewers</em>; that must be done in the GitHub UI. If you amend the commit message but don’t include the <code>--update-message</code> flag, you’ll get an error.</p>
+</li>
+</ul>
+<p>If you want to go the other way — that is, make your local commit message match the PR’s title and description — you can run <code>spr amend</code>.</p>
+<h2 id="further-information"><a class="header" href="#further-information">Further information</a></h2>
+<h3 id="fields-added-by-spr"><a class="header" href="#fields-added-by-spr">Fields added by spr</a></h3>
+<p>At various stages of a commit’s lifecycle, <code>spr</code> will add lines to the commit message:</p>
+<ul>
+<li>
+<p>After first creating a PR, <code>spr diff</code> will amend the commit message to include a line like this at the end:</p>
+<pre><code>Pull Request: https://github.com/example/project/pull/123
+</code></pre>
+<p>The presence or absence of this line is how <code>spr diff</code> knows whether a commit already has a PR created for it, and thus whether it should create a new PR or update an existing one.</p>
+</li>
+<li>
+<p><code>spr land</code> will amend the commit message to exactly match the title/description of the PR (just as <code>spr amend</code> does), as well as adding a line like this:</p>
+<pre><code>Reviewed By: github-username-a
+</code></pre>
+<p>This line names the GitHub users who approved the PR.</p>
+</li>
+</ul>
+<h3 id="example-commit-message-lifecycle"><a class="header" href="#example-commit-message-lifecycle">Example commit message lifecycle</a></h3>
+<p>This is what a commit message should look like when you first commit it, before running <code>spr</code> at all:</p>
+<pre><code>Add feature
+
+This is a really cool feature! It's going to be great.
+
+Test Plan:
+- Run tests
+- Use the feature
+
+Reviewers: user-a, coworker-b
+</code></pre>
+<p>After running <code>spr diff</code> to create a PR, the local commit message will be amended to include a link to the PR:</p>
+<pre><code>Add feature
+
+This is a really cool feature! It's going to be great.
+
+Test Plan:
+- Run tests
+- Use the feature
+
+Reviewers: user-a, coworker-b
+
+Pull Request: https://github.com/example/my-thing/pull/123
+</code></pre>
+<p>In this state, running <code>spr diff</code> again will update PR 123.</p>
+<p>Running <code>spr land</code> will amend the commit message to have the exact title/description of PR 123, add the list of users who approved the PR, then land the commit. In this case, suppose only <code>coworker-b</code> approved:</p>
+<pre><code>Add feature
+
+This is a really cool feature! It's going to be great.
+
+Test Plan:
+- Run tests
+- Use the feature
+
+Reviewers: user-a, coworker-b
+
+Reviewed By: coworker-b
+
+Pull Request: https://github.com/example/my-thing/pull/123
+</code></pre>
+<h3 id="reformatting-the-commit-message"><a class="header" href="#reformatting-the-commit-message">Reformatting the commit message</a></h3>
+<p>spr is fairly permissive in parsing your commit message: it is case-insensitive, and it mostly ignores whitespace. You can run <code>spr format</code> to rewrite your HEAD commit’s message to be in a canonical format.</p>
+<p>This command does not touch GitHub; it doesn’t matter whether the commit has a PR created for it or not.</p>
+<p>Note that <code>spr land</code> will write the message of the commit it lands in the canonical format; you don’t need to do so yourself before landing.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="check-out-someone-elses-pr"><a class="header" href="#check-out-someone-elses-pr">Check Out Someone Else’s PR</a></h1>
+<p>While reviewing someone else’s pull request, it may be useful to pull their changes to your local repo, so you can run their code, or view it in your editor/IDE, etc.</p>
+<p>To do so, get the number of the PR you want to pull, and run <code>spr patch &lt;number&gt;</code>. This creates a local branch named <code>PR-&lt;number&gt;</code>, and checks it out.</p>
+<p>The head of this new local branch is the PR commit itself. The branch is based on the <code>main</code> commit that was closest to the PR commit in the creator’s local repo. In between:</p>
+<ul>
+<li>
+<p>If the PR commit was directly on top of a <code>main</code> commit, then the PR commit will be the only one on the branch.</p>
+</li>
+<li>
+<p>If there were commits between the PR commit and the nearest <code>main</code> commit, they will be squashed into a single commit in your new local branch.</p>
+</li>
+</ul>
+<p>Thus, the new local branch always has either one or two commits on it, before joining <code>main</code>.</p>
+<p><img src="user/../images/patch.svg" alt="Diagram of the branching scheme" /></p>
+<h2 id="updating-the-pr"><a class="header" href="#updating-the-pr">Updating the PR</a></h2>
+<p>You can amend the head commit of the <code>PR-&lt;number&gt;</code> branch locally, and run <code>spr diff</code> to update the PR; it doesn’t matter that you didn’t create the PR. However, doing so will overwrite the contents of the PR on GitHub with what you have locally. You should coordinate with the PR creator before doing so.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="configuration"><a class="header" href="#configuration">Configuration</a></h1>
+<p>The recommended way to configure spr is to run <code>spr init</code>, rather than setting config values manually. You can rerun <code>spr init</code> to update config at any time.</p>
+<p>spr uses the following Git configuration values:</p>
+<div class="table-wrapper"><table><thead><tr><th>config key</th><th>CLI flag</th><th>description</th><th>default<sup class="footnote-reference" id="fr-default-1"><a href="#footnote-default">1</a></sup></th><th>default in <code>spr init</code><sup class="footnote-reference" id="fr-initdefault-1"><a href="#footnote-initdefault">2</a></sup></th></tr></thead><tbody>
+<tr><td><code>githubAuthToken</code></td><td><code>--github-auth-token</code><sup class="footnote-reference" id="fr-cli-token-1"><a href="#footnote-cli-token">3</a></sup></td><td>The GitHub authentication token to use for accessing the GitHub API.</td><td></td><td></td></tr>
+<tr><td><code>githubRepository</code></td><td><code>--github-repository</code></td><td>Name of repository on github.com in <code>owner/repo</code> format</td><td></td><td></td></tr>
+<tr><td><code>githubMasterBranch</code></td><td></td><td>The name of the centrally shared branch into which the pull requests are merged</td><td><code>master</code></td><td>taken from repository configuration on GitHub</td></tr>
+<tr><td><code>branchPrefix</code></td><td><code>--branch-prefix</code></td><td>String used to prefix autogenerated names of pull request branches</td><td></td><td><code>spr/GITHUB_USERNAME/</code></td></tr>
+<tr><td><code>requireApproval</code></td><td></td><td>If true, <code>spr land</code> will refuse to land a pull request that is not accepted</td><td>false</td><td></td></tr>
+<tr><td><code>requireTestPlan</code></td><td></td><td>If true, <code>spr diff</code> will refuse to process a commit without a test plan</td><td>true</td><td></td></tr>
+</tbody></table>
+</div>
+<ul>
+<li>
+<p>The config keys are all in the <code>spr</code> section; for example, <code>spr.githubAuthToken</code>.</p>
+</li>
+<li>
+<p>Values passed on the command line take precedence over values set in Git configuration.</p>
+</li>
+<li>
+<p>Values are read from Git configuration as if by <code>git config --get</code>, and thus follow its order of precedence in reading from local and global config files. See the <a href="https://git-scm.com/docs/git-config">git-config docs</a> for dteails.</p>
+</li>
+<li>
+<p><code>spr init</code> writes configured values into <code>.git/config</code> in the local repo. (It must be run inside a Git repo.)</p>
+</li>
+</ul>
+<hr>
+<ol class="footnote-definition"><li id="footnote-default">
+<p>Value used by <code>spr</code> if not set in configuration. <a href="#fr-default-1">↩</a></p>
+</li>
+<li id="footnote-initdefault">
+<p>Value suggested by <code>spr init</code> if not previously configured. <a href="#fr-initdefault-1">↩</a></p>
+</li>
+<li id="footnote-cli-token">
+<p>Be careful using this: your auth token will be in your shell history. <a href="#fr-cli-token-1">↩</a></p>
+</li>
+</ol><div style="break-before: page; page-break-before: always;"></div><h1 id="how-it-works---simple-pr"><a class="header" href="#how-it-works---simple-pr">How it works - Simple PR</a></h1>
+<p>This section describes how <code>spr</code> works from a git perspective.
+This is not required to use <code>spr</code>,
+but more to understand how it works.</p>
+<p>It follows the <a href="reference/../user/simple.html">simple PR</a> workflow.
+Understanding that workflow will help understand the decisions made here.</p>
+<h2 id="creating-the-pr"><a class="header" href="#creating-the-pr">Creating the PR</a></h2>
+<p>Let’s say you have a repo with a <code>main</code> branch:</p>
+<pre class="mermaid">gitGraph
+    commit id: &quot;A&quot;
+    commit id: &quot;B&quot;
+</pre>
+<p>Now you want to make a change.
+You make a commit on the <code>main</code> branch with your change and the commit id is <code>C1</code>:</p>
+<pre class="mermaid">gitGraph
+    commit id: &quot;A&quot;
+    commit id: &quot;B&quot;
+    commit id: &quot;C1&quot;
+</pre>
+<p>When you are ready to submit a PR, you run <code>spr diff</code> from the head commit of the <code>main</code> branch (<code>C1</code>).
+This will create a transient branch that is only used to create a PR on GitHub:</p>
+<pre class="mermaid">gitGraph
+    commit id: &quot;A&quot;
+    commit id: &quot;B&quot;
+    branch spr/username/commit-title-of-C1
+    checkout main
+    commit id: &quot;C1&quot;
+    checkout spr/username/commit-title-of-C1
+    commit id: &quot;B-&gt;C1&quot;
+</pre>
+<p>This <code>spr/username/commit-title-of-C1</code> branch is pushed to GitHub and used to open a PR against the <code>main</code> branch.
+The transient branch is not something you really need to directly interact with;
+<code>spr</code> takes care of keeping it up to date, creating the correct commits, etc.
+All you need to do is continue working on the <code>main</code> branch.</p>
+<p>The <code>C1</code> commit is updated with a few sections from the PR information.
+A <code>Pull Request</code> section is added that links to the PR that was created.
+This allows <code>spr</code> to know which branch/PR to update from only the commit.</p>
+<h2 id="amending-the-commit"><a class="header" href="#amending-the-commit">Amending the commit</a></h2>
+<p>Let’s say your PR needed some changes.
+What you’d do is make the changes to the commit that the PR was created from (in this case <code>C1</code>)
+amending the changes to the commit.</p>
+<pre class="mermaid">gitGraph
+    commit id: &quot;A&quot;
+    commit id: &quot;B&quot;
+    branch spr/username/commit-title-of-C1
+    checkout main
+    commit id: &quot;C2&quot;
+    checkout spr/username/commit-title-of-C1
+    commit id: &quot;B-&gt;C1&quot;
+</pre>
+<p>The next time that you use <code>spr diff</code>,
+it will compute the diff from <code>C1</code> to <code>C2</code>,
+and push that to GitHub as an additional commit:</p>
+<pre class="mermaid">gitGraph
+    commit id: &quot;A&quot;
+    commit id: &quot;B&quot;
+    branch spr/username/commit-title-of-C1
+    checkout main
+    commit id: &quot;C2&quot;
+    checkout spr/username/commit-title-of-C1
+    commit id: &quot;B-&gt;C1&quot;
+    commit id: &quot;C1-&gt;C2&quot;
+</pre>
+<p>Pushing additional commits to the PR rather than rebasing the commits that are already on the PR works better with GitHub (discussions stay intact, commits aren’t lost in the UI, changes between requests can be tracked, etc.).</p>
+<p>If you make more changes,
+it continues along this path:</p>
+<pre class="mermaid">gitGraph
+    commit id: &quot;A&quot;
+    commit id: &quot;B&quot;
+    branch spr/username/commit-title-of-C1
+    checkout main
+    commit id: &quot;C3&quot;
+    checkout spr/username/commit-title-of-C1
+    commit id: &quot;B-&gt;C1&quot;
+    commit id: &quot;C1-&gt;C2&quot;
+    commit id: &quot;C2-&gt;C3&quot;
+</pre>
+<h2 id="landing-the-change"><a class="header" href="#landing-the-change">Landing the change</a></h2>
+<p>Once you’re ready to merge the PR,
+you would use <code>spr land</code> to merge the PR.
+This will perform a squash merge on GitHub for the PR.
+Once the branch has been merged on GitHub,
+it will update the local <code>main</code> branch and delete the transient branch:</p>
+<pre class="mermaid">gitGraph
+    commit id: &quot;A&quot;
+    commit id: &quot;B&quot;
+    commit id: &quot;C3&quot;
+</pre>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="mermaid.min.js"></script>
+        <script src="mermaid-init.js"></script>
+
+        <script>
+        window.addEventListener('load', function() {
+            window.setTimeout(window.print, 100);
+        });
+        </script>
+
+
+    </div>
+    </body>
+</html>
