@@ -94,7 +94,7 @@ pub async fn patch(
 
                 pr_master_oid = git.create_derived_commit(
                     pr_base_oid,
-                    &format!("[𝘀𝗽𝗿] Base of Pull Request #{}", pr.number),
+                    &format!("[spr] Base of Pull Request #{}", pr.number),
                     pr_base_tree,
                     &[pr_master_oid],
                 )?;

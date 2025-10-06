@@ -18,10 +18,9 @@ use crate::{
 
 #[derive(Debug, clap::Parser)]
 pub struct LandOptions {
-    /// Merge a Pull Request that was created or updated with spr diff
-    /// --cherry-pick
+    /// Don't automatically rebase local changes after landing the commit.
     #[clap(long)]
-    cherry_pick: bool,
+    no_rebase: bool,
 }
 
 pub async fn land(
@@ -34,16 +33,6 @@ pub async fn land(
     let mut prepared_commits = gh.get_prepared_commits()?;
 
     let based_on_unlanded_commits = prepared_commits.len() > 1;
-
-    if based_on_unlanded_commits && !opts.cherry_pick {
-        return Err(Error::msg(formatdoc!(
-            "Cannot land a commit whose parent is not on {master}. To land \
-             this commit, rebase it so that it is a direct child of {master}.
-             Alternatively, if you used the `--cherry-pick` option with `spr \
-             diff`, then you can pass it to `spr land`, too.",
-            master = &config.master_ref.branch_name(),
-        )));
-    }
 
     let prepared_commit = match prepared_commits.last_mut() {
         Some(c) => c,
@@ -82,6 +71,8 @@ pub async fn land(
     let current_master =
         gh.remote().fetch_branch(config.master_ref.branch_name())?;
 
+    let current_master_tree_oid =
+        git.get_tree_oid_for_commit(current_master)?;
     let base_is_master = pull_request.base.is_master_branch();
     let index = git.cherrypick(prepared_commit.oid, current_master)?;
 
@@ -101,6 +92,14 @@ pub async fn land(
     // This is the tree we are getting from cherrypicking the local commit
     // on the selected base (master or stacked-on Pull Request).
     let our_tree_oid = git.write_index(index)?;
+
+    if our_tree_oid == current_master_tree_oid {
+        return Err(Error::msg(formatdoc!(
+            "This commit would be empty if applied on top of the '{master}' branch. \
+            Please amend changes to the commit or close the pull request.",
+            master = &config.master_ref.branch_name()
+        )));
+    }
 
     // Now let's predict what merging the PR into the master branch would
     // produce.
@@ -129,7 +128,7 @@ pub async fn land(
     // Okay, we are confident now that the PR can be merged and the result of
     // that merge would be a master commit with the same tree as if we
     // cherry-picked the commit onto master.
-    let mut pr_head_oid = pull_request.head_oid;
+    let pr_head_oid = pull_request.head_oid;
 
     if !base_is_master {
         // The base of the Pull Request on GitHub is not set to master. This
@@ -182,25 +181,11 @@ pub async fn land(
             // this whole operation further above. But in order not to show them
             // as part of this Pull Request after landing, we have to make clear
             // those are changes in master, not in this Pull Request.
-            // Here comes the additional merge-in-master commit on the Pull
-            // Request branch that achieves that!
-
-            pr_head_oid = git.create_derived_commit(
-                pr_head_oid,
-                &format!(
-                    "[𝘀𝗽𝗿] landed version\n\nCreated using spr {}",
-                    env!("CARGO_PKG_VERSION"),
-                ),
-                our_tree_oid,
-                &[pr_head_oid, current_master],
-            )?;
-
-            gh.remote()
-                .push_to_remote(&[PushSpec {
-                    oid: Some(pr_head_oid),
-                    remote_ref: pull_request.head.on_github(),
-                }])
-                .wrap_err("git push failed")?;
+            return Err(Error::msg(formatdoc!(
+                "Changes this PR is based on were landed since the pull \
+                        request was last updated. Please run `spr diff` to update the \
+                        pull request and then try `spr land` again!"
+            )));
         }
 
         gh.update_pull_request(
@@ -266,6 +251,8 @@ pub async fn land(
         tokio::time::sleep(Duration::from_secs(1)).await;
     };
 
+    let merge_title =
+        format!("{} (#{})", pull_request.title, pull_request_number);
     let result = match result {
         Ok(()) => {
             // We have checked that merging the Pull Request branch into the master
@@ -277,7 +264,7 @@ pub async fn land(
                 .pulls(&config.owner, &config.repo)
                 .merge(pull_request_number)
                 .method(octocrab::params::pulls::MergeMethod::Squash)
-                .title(pull_request.title)
+                .title(merge_title)
                 .message(build_github_body_for_merging(&pull_request.sections))
                 .sha(format!("{}", pr_head_oid))
                 .send()
@@ -344,11 +331,18 @@ pub async fn land(
                     .context("git fetch failed".to_string());
             }
         }
-        git.rebase_commits(&mut prepared_commits[..], new_parent_oid)
-            .context(
-                "The automatic rebase failed - please rebase manually!"
-                    .to_string(),
+        if !opts.no_rebase {
+            git.rebase_commits(&mut prepared_commits[..], new_parent_oid)
+                .context(
+                    "The automatic rebase failed - please rebase manually!"
+                        .to_string(),
+                )?;
+        } else {
+            output(
+                "⏭",
+                "The automatic rebase was skipped as per user request.",
             )?;
+        }
     }
 
     let mut push_specs = vec![PushSpec {
